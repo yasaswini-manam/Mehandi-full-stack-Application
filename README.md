@@ -31,6 +31,8 @@ mehandi-yasaswini/
 └── Database/
      └── mehandi_booking.sql
 
+```
+
 5. **.Installation **
     ### Backend
     1. Ensure MySQL is running with a database named `mehandi_booking`.
