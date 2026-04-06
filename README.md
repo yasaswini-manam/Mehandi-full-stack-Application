@@ -7,9 +7,12 @@ This project is a full-stack application featuring a React-based frontend and a 
 E-commerce Shop: A curated storefront for henna products with category filtering and a persistent shopping cart.Dynamic Shipping: Automated shipping cost calculation (Free shipping on orders above ₹499).
 
 3. **Tech Stack:**
-Frontend: React.js (Vite),Axios, CSS-in-JS
-Backend: Java 17, Spring Boot 3.x, Spring Data JPA.
-Database: MySQL 8.0.Tools: Maven.
+ 
+  *Frontend: React.js (Vite),Axios, CSS-in-JS
+
+  *Backend: Java 17, Spring Boot 3.x, Spring Data JPA.
+
+  *Database: MySQL 8.0.Tools: Maven.
 
 ### 4. Project Structure
 
