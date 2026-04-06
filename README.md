@@ -1,6 +1,6 @@
 # Mehandi by Yasaswini: Art, Beauty, Tradition
 
-1. ** Project Title **:Mehandi by Yasaswini — A Premium Bridal Service & E-commerce Platform.
+1. **Project Title**:Mehandi by Yasaswini — A Premium Bridal Service & E-commerce Platform.
 This project is a full-stack application featuring a React-based frontend and a RESTful API backend. Follow these steps to get your development environment running.
  
 2. **Project Description**:A comprehensive full-stack web application designed for professional mehandi artists. The system streamlines the client journey from exploring intricate portfolios to booking time-sensitive appointments and purchasing professional-grade henna supplies. It bridges the gap between traditional artistry and modern digital convenience.
@@ -33,7 +33,7 @@ mehandi-yasaswini/
 
 ```
 
-5. **.Installation **
+5. **Installation**
     ### Backend
     1. Ensure MySQL is running with a database named `mehandi_booking`.
     2. Update `src/main/resources/application.properties` with your credentials.
