@@ -11,8 +11,9 @@ Frontend: React.js (Vite),Axios, CSS-in-JS
 Backend: Java 17, Spring Boot 3.x, Spring Data JPA.
 Database: MySQL 8.0.Tools: Maven.
 
-4. **Project Structure:**
+### 4. Project Structure
 
+```text
 mehandi-yasaswini/
 ├── frontend/ (React + Vite)
 │    ├── src/
@@ -21,14 +22,14 @@ mehandi-yasaswini/
 │    │    ├── pages/        # View Modules (Home, Shop, Booking)
 │    │    └── data/         # constants.js (Central Data Source)
 │
-|└── backend/ (Spring Boot)
-|     ├── controller/        # REST API Endpoints
-|     ├── service/           # Business & Capacity Logic
-|     ├── repository/        # Database Query Interfaces
-|     └── entity/            # Database Models (Order, Booking, Service)
-|
-|____Database
-        |__mehandi_booking.sql
+├── backend/ (Spring Boot)
+│    ├── controller/        # REST API Endpoints
+│    ├── service/           # Business & Capacity Logic
+│    ├── repository/        # Database Query Interfaces
+│    └── entity/            # Database Models (Order, Booking, Service)
+│
+└── Database/
+     └── mehandi_booking.sql
 
 5. **.Installation **
     ### Backend
