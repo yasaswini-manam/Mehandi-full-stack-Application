@@ -1,6 +1,6 @@
 package com.online.booking.repository;
 
-import com.online.booking.entity.Service; // Ensure your Service entity name matches this
+import com.online.booking.entity.Service; 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
