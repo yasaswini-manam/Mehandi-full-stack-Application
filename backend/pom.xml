@@ -47,6 +47,18 @@
     <scope>test</scope>
 </dependency>
 
+<!-- REMOVE this -->
+<!-- <dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
+</dependency> -->
+
+<!-- ADD this -->
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+</dependency>
+
 </dependencies>
 
 <build>
