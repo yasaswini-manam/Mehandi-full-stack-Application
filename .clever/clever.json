@@ -1,0 +1,6 @@
+{
+  "build": {
+    "type": "maven",
+    "app_repository": "backend"
+  }
+}
