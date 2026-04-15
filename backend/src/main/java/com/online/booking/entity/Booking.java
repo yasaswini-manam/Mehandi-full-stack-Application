@@ -39,9 +39,8 @@ public class Booking {
     @Column(columnDefinition = "TEXT")
     private String notes;
 
-    // --- NEW RELATIONSHIP ADDED BELOW ---
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id") // This links to the Order table
+    @JoinColumn(name = "order_id") 
     @JsonIgnore // Prevents infinite loops when converting to JSON
     private Order order;
 }
