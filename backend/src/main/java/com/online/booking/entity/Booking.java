@@ -25,6 +25,7 @@ public class Booking {
     @JsonProperty("booking_date")
     private LocalDate bookingDate;
 
+
     @Column(name = "time_slot")
     @JsonProperty("time_slot")
     private String timeSlot;
