@@ -75,8 +75,63 @@ const BookingPage = ({ selectedService, setSelectedService, showToast, currentUs
         orderData,
       );
       if (response.status === 200 || response.status === 201) {
+        
+        // Send appointment confirmation email using EmailJS REST API
+        let emailErrorMsg = "";
+        try {
+          const bookingEmailPayload = {
+            service_id: "service_1jqpgbk",
+            template_id: "template_30ae8t7",
+            user_id: "PK56niPqzEWc1B-3Q",
+            template_params: {
+              // Recipient Name variations
+              to_name: form.name,
+              user_name: form.name,
+              name: form.name,
+              customer_name: form.name,
+
+              // Recipient Email variations
+              to_email: form.email,
+              user_email: form.email,
+              email: form.email,
+              recipient_email: form.email,
+
+              // Specific Template Mapping
+              artist_name: "Yasaswini",
+              time: `${form.date} at ${form.timeSlot}`,
+              venue: form.address || "At Studio / Specified Venue",
+
+              // Booking Details
+              phone: form.phone,
+              service_name: form.service?.name || "Service",
+              service: form.service?.name || "Service",
+              price: form.service?.price || 0,
+              date: form.date,
+              booking_date: form.date,
+              time_slot: form.timeSlot,
+              notes: form.notes || "",
+              
+              message: `Your booking for ${form.service?.name || "Service"} on ${form.date} at ${form.timeSlot} is confirmed!`,
+            },
+          };
+
+          await axios.post(
+            "https://api.emailjs.com/api/v1.0/email/send",
+            bookingEmailPayload
+          );
+          console.log("EmailJS: Booking confirmation email sent successfully.");
+        } catch (emailErr) {
+          console.error("EmailJS Error: Failed to send booking confirmation email.", emailErr);
+          const errData = emailErr.response?.data ? (typeof emailErr.response.data === 'string' ? emailErr.response.data : JSON.stringify(emailErr.response.data)) : "";
+          emailErrorMsg = errData || emailErr.message || "Unknown error";
+        }
+
         setBooked(true);
-        showToast("🎉 Booking confirmed! See you soon.");
+        if (emailErrorMsg) {
+          showToast(`⚠️ Booking confirmed, but email failed: ${emailErrorMsg}`);
+        } else {
+          showToast("🎉 Booking confirmed! Confirmation email sent.");
+        }
       }
     } catch (error) {
       const errorMessage =
