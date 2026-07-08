@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { OrnaDivider } from "../components/Shared";
 import { SERVICES } from "../data/constants";
+import { API_BASE_URL } from "../config";
 
 // Import Product Images
 import conesImg from '../assets/12cones.jpg';
@@ -42,7 +43,7 @@ const OrderHistoryPage = ({ currentUser, setPage, showToast }) => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/orders/user/${currentUser.email}`
+          `${API_BASE_URL}/api/orders/user/${currentUser.email}`
         );
         setOrders(response.data);
       } catch (err) {

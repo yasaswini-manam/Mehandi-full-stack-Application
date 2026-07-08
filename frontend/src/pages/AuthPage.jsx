@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { OrnaDivider } from "../components/Shared";
+import { API_BASE_URL } from "../config";
 
 const AuthPage = ({ setCurrentUser, showToast, setPage, redirectPath }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -44,7 +45,7 @@ const AuthPage = ({ setCurrentUser, showToast, setPage, redirectPath }) => {
     try {
       if (isLogin) {
         // --- LOGIN FLOW ---
-        const response = await axios.post("http://localhost:8080/api/users/login", {
+        const response = await axios.post(`${API_BASE_URL}/api/users/login`, {
           email: form.email,
           password: form.password,
         });
@@ -136,7 +137,7 @@ const AuthPage = ({ setCurrentUser, showToast, setPage, redirectPath }) => {
         }
       } else {
         // --- REGISTER FLOW ---
-        const response = await axios.post("http://localhost:8080/api/users/register", {
+        const response = await axios.post(`${API_BASE_URL}/api/users/register`, {
           name: form.name,
           email: form.email,
           phone: form.phone,

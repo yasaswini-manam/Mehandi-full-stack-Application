@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { OrnaDivider } from '../components/Shared';
 import LocationModal from '../components/LocationModal';
+import { API_BASE_URL } from '../config';
 
 // --- PRODUCT-SPECIFIC IMAGE IMPORTS ---
 import conesImg from '../assets/12cones.jpg';
@@ -106,7 +107,7 @@ const CartPage = ({ cart, setCart, wishlist, setWishlist, showToast, currentUser
     };
 
     try {
-      const response = await axios.post("http://localhost:8080/api/orders", orderData);
+      const response = await axios.post(`${API_BASE_URL}/api/orders`, orderData);
       if (response.status === 200 || response.status === 201) {
         setOrdered(true);
         showToast('🎉 Order placed successfully!');

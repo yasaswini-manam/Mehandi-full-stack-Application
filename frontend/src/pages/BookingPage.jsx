@@ -7,6 +7,7 @@ import makeupImg from "../assets/makeup1.jpg";
 import sareImg from "../assets/sd2.jpg";
 import nailImg from "../assets/na.jpg";
 import spImg from "../assets/sp.jpg";
+import { API_BASE_URL } from "../config";
 
 const BookingPage = ({ selectedService, setSelectedService, showToast, currentUser }) => {
   const [step, setStep] = useState(1);
@@ -71,7 +72,7 @@ const BookingPage = ({ selectedService, setSelectedService, showToast, currentUs
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/orders",
+        `${API_BASE_URL}/api/orders`,
         orderData,
       );
       if (response.status === 200 || response.status === 201) {

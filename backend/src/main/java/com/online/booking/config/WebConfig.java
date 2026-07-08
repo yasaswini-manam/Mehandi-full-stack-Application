@@ -1,6 +1,5 @@
-package com.online.booking.config; 
+package com.online.booking.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -10,9 +9,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        // Allows your React frontend to send data to this backend
+
         registry.addMapping("/api/**")
-                .allowedOrigins("http://localhost:5173") 
+                .allowedOrigins(
+                        "http://localhost:5173",          // Local React (development)
+                        "https://mehandi-full-stack-application.vercel.app/"     // Vercel frontend (production)
+                )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
