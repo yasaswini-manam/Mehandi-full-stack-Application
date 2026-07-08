@@ -20,7 +20,13 @@ public class Order {
     @JsonProperty("shipping_address")
     private String shippingAddress;
 
+    @JsonProperty("total_amount")
     private int totalAmount;
+
+    private String email;
+
+    @Column(columnDefinition = "TEXT")
+    private String items;
 
     // --- NEW RELATIONSHIP ADDED BELOW ---
     // cascade = CascadeType.ALL means when you save an Order, it saves the Bookings too.

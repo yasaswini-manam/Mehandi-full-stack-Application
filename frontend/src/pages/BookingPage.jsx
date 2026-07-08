@@ -8,16 +8,16 @@ import sareImg from "../assets/sd2.jpg";
 import nailImg from "../assets/na.jpg";
 import spImg from "../assets/sp.jpg";
 
-const BookingPage = ({ selectedService, setSelectedService, showToast }) => {
+const BookingPage = ({ selectedService, setSelectedService, showToast, currentUser }) => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     service: selectedService || null,
     date: "",
     timeSlot: "",
-    name: "",
-    email: "",
-    phone: "",
+    name: currentUser?.name || "",
+    email: currentUser?.email || "",
+    phone: currentUser?.phone || "",
     notes: "",
     address: "",
   });
@@ -55,6 +55,7 @@ const BookingPage = ({ selectedService, setSelectedService, showToast }) => {
     const orderData = {
       shipping_address: form.address || "No Address Provided",
       totalAmount: form.service?.price || 0,
+      email: form.email,
       bookings: [
         {
           service_id: form.service?.id || 1,
@@ -184,10 +185,11 @@ const BookingPage = ({ selectedService, setSelectedService, showToast }) => {
                 service: null,
                 date: "",
                 timeSlot: "",
-                name: "",
-                email: "",
-                phone: "",
+                name: currentUser?.name || "",
+                email: currentUser?.email || "",
+                phone: currentUser?.phone || "",
                 notes: "",
+                address: "",
               });
               setSelectedService(null);
             }}
@@ -608,6 +610,7 @@ const BookingPage = ({ selectedService, setSelectedService, showToast }) => {
                       className="form-input"
                       placeholder={field.placeholder}
                       value={value}
+                      disabled={field.key === "name" || field.key === "email"}
                       onChange={(e) => {
                         let inputValue = e.target.value;
                         if (field.key === "phone") {
@@ -623,6 +626,8 @@ const BookingPage = ({ selectedService, setSelectedService, showToast }) => {
                           isEmailInvalid || isPhoneInvalid
                             ? "1px solid red"
                             : undefined,
+                        backgroundColor: (field.key === "name" || field.key === "email") ? "rgba(0,0,0,0.03)" : "white",
+                        cursor: (field.key === "name" || field.key === "email") ? "not-allowed" : "text",
                       }}
                     />
                     {isEmailInvalid && (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Navbar = ({ page, setPage, cartCount }) => {
+const Navbar = ({ page, setPage, cartCount, wishlistCount, currentUser, setCurrentUser, showToast }) => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -45,6 +45,58 @@ const Navbar = ({ page, setPage, cartCount }) => {
             </button>
           ))}
           
+          {/* User Auth Info (Desktop) */}
+          {currentUser ? (
+            <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+              <button onClick={() => setPage('orders')}
+                style={{ 
+                  background: 'none', border: 'none', cursor: 'pointer', 
+                  fontFamily: 'Josefin Sans', fontSize: '0.75rem', 
+                  letterSpacing: '0.15em', textTransform: 'uppercase', 
+                  color: page === 'orders' ? 'var(--copper)' : 'var(--brown)', 
+                  transition: 'color 0.3s', fontWeight: 400 
+                }}>
+                My Orders
+              </button>
+              <span style={{ fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--copper)', fontWeight: 500 }}>
+                Hi, {currentUser.name.split(' ')[0]}
+              </span>
+              <button onClick={() => {
+                localStorage.removeItem('currentUser');
+                setCurrentUser(null);
+                showToast('👋 Logged out successfully.');
+                setPage('home');
+              }}
+                style={{ 
+                  background: 'none', border: 'none', cursor: 'pointer', 
+                  fontFamily: 'Josefin Sans', fontSize: '0.72rem', 
+                  letterSpacing: '0.15em', textTransform: 'uppercase', 
+                  color: 'var(--warm-gray)', transition: 'color 0.3s'
+                }}>
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => setPage('auth')}
+              style={{ 
+                background: 'none', border: 'none', cursor: 'pointer', 
+                fontFamily: 'Josefin Sans', fontSize: '0.75rem', 
+                letterSpacing: '0.18em', textTransform: 'uppercase', 
+                color: page === 'auth' ? 'var(--copper)' : 'var(--brown)', 
+                transition: 'color 0.3s', fontWeight: 400 
+              }}>
+              Login
+            </button>
+          )}
+
+          {/* Wishlist Icon */}
+          <div style={{ position: 'relative', cursor: 'pointer', marginRight: 8 }} onClick={() => setPage('wishlist')}>
+            <svg width="20" height="20" fill={page === 'wishlist' ? "var(--copper)" : "none"} stroke={page === 'wishlist' ? "var(--copper)" : "var(--brown)"} strokeWidth="1.7" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+            </svg>
+            {wishlistCount > 0 && <span className="badge" style={{ position: 'absolute', top: -8, right: -8, background: "var(--copper)" }}>{wishlistCount}</span>}
+          </div>
+
           {/* Cart Icon */}
           <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => setPage('cart')}>
             <svg width="20" height="20" fill="none" stroke="var(--brown)" strokeWidth="1.5" viewBox="0 0 24 24">
@@ -74,6 +126,57 @@ const Navbar = ({ page, setPage, cartCount }) => {
               {l.label}
             </div>
           ))}
+
+          {/* User Auth Info (Mobile) */}
+          {currentUser ? (
+            <>
+              <div onClick={() => { setPage('orders'); setMenuOpen(false); }}
+                style={{ 
+                  padding: '12px 0', borderBottom: '1px solid var(--border)', 
+                  fontSize: '0.85rem', letterSpacing: '0.12em', 
+                  textTransform: 'uppercase', cursor: 'pointer', color: 'var(--brown)' 
+                }}>
+                My Orders
+              </div>
+              <div style={{ 
+                padding: '12px 0', borderBottom: '1px solid var(--border)', 
+                fontSize: '0.85rem', letterSpacing: '0.12em', 
+                textTransform: 'uppercase', color: 'var(--copper)', fontWeight: 500
+              }}>
+                Hi, {currentUser.name}
+              </div>
+              <div onClick={() => {
+                localStorage.removeItem('currentUser');
+                setCurrentUser(null);
+                showToast('👋 Logged out successfully.');
+                setPage('home');
+                setMenuOpen(false);
+              }}
+                style={{ 
+                  padding: '12px 0', borderBottom: '1px solid var(--border)', 
+                  fontSize: '0.85rem', letterSpacing: '0.12em', 
+                  textTransform: 'uppercase', cursor: 'pointer', color: 'var(--warm-gray)' 
+                }}>
+                Logout
+              </div>
+            </>
+          ) : (
+            <div onClick={() => { setPage('auth'); setMenuOpen(false); }}
+              style={{ 
+                padding: '12px 0', borderBottom: '1px solid var(--border)', 
+                fontSize: '0.85rem', letterSpacing: '0.12em', 
+                textTransform: 'uppercase', cursor: 'pointer', color: 'var(--brown)' 
+              }}>
+              Login / Register
+            </div>
+          )}
+
+          {/* Wishlist link in mobile menu */}
+          <div onClick={() => { setPage('wishlist'); setMenuOpen(false); }}
+            style={{ padding: '12px 0', borderBottom: '1px solid var(--border)', fontSize: '0.85rem', letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', color: 'var(--brown)' }}>
+            Wishlist ({wishlistCount})
+          </div>
+
           {/* Cart link in mobile menu */}
           <div onClick={() => { setPage('cart'); setMenuOpen(false); }}
             style={{ padding: '12px 0', fontSize: '0.85rem', letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', color: 'var(--brown)' }}>

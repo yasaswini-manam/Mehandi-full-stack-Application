@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "bookings")
 @Data
-@NoArgsConstructor
+@NoArgsConstructor  
 @AllArgsConstructor
 public class Booking {
 
@@ -35,7 +35,7 @@ public class Booking {
     private String customerName;
 
     private String email;
-    private String phone;
+    private String phone;                                                              
 
     @Column(columnDefinition = "TEXT")
     private String notes;

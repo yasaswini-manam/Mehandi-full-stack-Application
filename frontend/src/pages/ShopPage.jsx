@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-// Import the product data
 import { PRODUCTS } from '../data/constants';
-// Import the shared divider
 import { OrnaDivider } from '../components/Shared';
+import LocationModal from '../components/LocationModal';
 
 // --- 1. PRODUCT-SPECIFIC IMAGE IMPORTS ---
 import conesImg from '../assets/12cones.jpg';
@@ -21,10 +20,14 @@ import sareImg from '../assets/sd2.jpg';
 import nailImg from '../assets/na.jpg';
 import spaImg from '../assets/sp.jpg';
 
-const ShopPage = ({ cart, setCart, showToast }) => {
+const ShopPage = ({ cart, setCart, wishlist, setWishlist, showToast }) => {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('default');
+  
+  // Location States
+  const [locationModalOpen, setLocationModalOpen] = useState(false);
+  const [deliveryLocation, setDeliveryLocation] = useState(null);
 
   const categories = ['all', 'henna', 'makeup', 'nails', 'accessories', 'books'];
 
@@ -56,6 +59,13 @@ const ShopPage = ({ cart, setCart, showToast }) => {
   };
 
   const addToCart = (product) => {
+    // If no location has been selected, require selecting one first
+    if (!deliveryLocation) {
+      showToast("📍 Please set your delivery location first to verify product availability!");
+      setLocationModalOpen(true);
+      return;
+    }
+    
     setCart(c => {
       const existing = c.find(i => i.id === product.id);
       if (existing) return c.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i);
@@ -84,6 +94,55 @@ const ShopPage = ({ cart, setCart, showToast }) => {
           Our <em style={{ fontStyle: 'italic', color: 'var(--copper)' }}>Shop</em>
         </h1>
         <OrnaDivider />
+      </div>
+
+      {/* Location Eligibility Verification Banner */}
+      <div style={{ maxWidth: 1200, margin: "0 auto 20px", padding: "0 40px" }}>
+        <div 
+          style={{ 
+            background: deliveryLocation ? "rgba(122,140,110,0.1)" : "rgba(181,98,42,0.1)",
+            border: `1px solid ${deliveryLocation ? "var(--sage)" : "var(--copper)"}`,
+            borderRadius: 4,
+            padding: "12px 20px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: 12,
+            animation: "fadeIn 0.4s ease"
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: "0.82rem", color: "var(--brown)" }}>
+            <span>{deliveryLocation ? "🚚" : "📍"}</span>
+            <span>
+              {deliveryLocation ? (
+                <span>Delivering to <strong>{deliveryLocation.city}, {deliveryLocation.state} - {deliveryLocation.pincode}</strong> (Fast delivery eligible)</span>
+              ) : (
+                <span style={{ color: "var(--copper)", fontWeight: 500 }}>Please set your delivery location on the map to unlock shopping additions.</span>
+              )}
+            </span>
+          </div>
+
+          <button 
+            onClick={() => setLocationModalOpen(true)}
+            style={{
+              padding: "6px 14px",
+              background: "white",
+              border: `1px solid ${deliveryLocation ? "var(--sage)" : "var(--copper)"}`,
+              color: deliveryLocation ? "var(--sage)" : "var(--copper)",
+              fontFamily: "Josefin Sans",
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              borderRadius: 4,
+              cursor: "pointer",
+              transition: "all 0.2s"
+            }}
+          >
+            {deliveryLocation ? "Change Location" : "Set Location ✦"}
+          </button>
+        </div>
       </div>
 
       {/* Controls: Filter, Search, Sort */}
@@ -125,6 +184,18 @@ const ShopPage = ({ cart, setCart, showToast }) => {
         {productsList.map((product, i) => {
           const inCart = cart.find(c => c.id === product.id);
           const displayImage = getSpecificProductPhoto(product.id) || getProductImage(product.category);
+          const inWishlist = wishlist && wishlist.some(w => w.id === product.id);
+
+          const toggleWishlist = (e) => {
+            e.stopPropagation();
+            if (inWishlist) {
+              setWishlist(w => w.filter(item => item.id !== product.id));
+              showToast("💔 Removed from Wishlist");
+            } else {
+              setWishlist(w => [...w, product]);
+              showToast("💖 Added to Wishlist");
+            }
+          };
 
           return (
             <div key={product.id} className="card-hover"
@@ -144,6 +215,25 @@ const ShopPage = ({ cart, setCart, showToast }) => {
                     padding: '4px 10px', zIndex: 2
                   }}>{product.badge}</div>
                 )}
+
+                {/* Floating Heart button */}
+                <button 
+                  onClick={toggleWishlist}
+                  style={{
+                    position: 'absolute', top: 12, right: 12,
+                    background: 'white', border: 'none',
+                    borderRadius: '50%', width: 32, height: 32,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    cursor: 'pointer', zIndex: 3,
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+                    transition: 'all 0.2s',
+                    outline: 'none'
+                  }}
+                >
+                  <svg width="16" height="16" fill={inWishlist ? "red" : "none"} stroke={inWishlist ? "red" : "var(--brown)"} strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                  </svg>
+                </button>
                 
                 <img 
                   src={displayImage} 
@@ -153,7 +243,7 @@ const ShopPage = ({ cart, setCart, showToast }) => {
 
                 {product.originalPrice && (
                   <div style={{
-                    position: 'absolute', top: 12, right: 12,
+                    position: 'absolute', top: 50, right: 12,
                     background: 'var(--sage)', color: 'white',
                     fontSize: '0.58rem', letterSpacing: '0.1em',
                     padding: '4px 8px', zIndex: 2
@@ -169,7 +259,7 @@ const ShopPage = ({ cart, setCart, showToast }) => {
                   <span className="stars" style={{ fontSize: '0.75rem' }}>{'★'.repeat(Math.floor(product.rating || 5))}</span>
                   <span style={{ fontSize: '0.72rem', color: 'var(--warm-gray)' }}>{product.rating || 5} ({product.reviews || 0})</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContainer: 'space-between', justifyContent: 'space-between' }}>
                   <div>
                     <span style={{ fontFamily: 'Cormorant Garamond', fontSize: '1.4rem', color: 'var(--copper)' }}>₹{product.price}</span>
                     {product.originalPrice && <span style={{ fontSize: '0.8rem', color: 'var(--warm-gray)', textDecoration: 'line-through', marginLeft: 8 }}>₹{product.originalPrice}</span>}
@@ -190,6 +280,16 @@ const ShopPage = ({ cart, setCart, showToast }) => {
           );
         })}
       </div>
+
+      {/* Dynamic Map Location Selector Modal */}
+      <LocationModal 
+        isOpen={locationModalOpen} 
+        onClose={() => setLocationModalOpen(false)} 
+        onSelectLocation={(loc) => {
+          setDeliveryLocation(loc);
+          showToast(`📍 Location set: ${loc.city}, pincode ${loc.pincode}`);
+        }}
+      />
     </div>
   );
 };

@@ -47,4 +47,9 @@ public class OrderController {
         }
         return orderRepository.save(order);
     }
+
+    @GetMapping("/user/{email}")
+    public List<Order> getOrdersByUserEmail(@PathVariable String email) {
+        return orderRepository.findByEmailOrderByIdDesc(email);
+    }
 }
