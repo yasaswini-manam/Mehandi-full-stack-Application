@@ -33,7 +33,8 @@ public class OrderController {
 
                 // Fetch the service by ID to update availability
                 serviceRepository.findById(booking.getServiceId()).ifPresent(service -> {
-                    service.setBookingCount(service.getBookingCount() + 1);
+                    int currentCount = service.getBookingCount() != null ? service.getBookingCount() : 0;
+                    service.setBookingCount(currentCount + 1);
                     
                     // Toggle availability based on count
                     if (service.getBookingCount() >= 10) {

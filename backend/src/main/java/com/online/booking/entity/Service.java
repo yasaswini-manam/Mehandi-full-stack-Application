@@ -21,11 +21,11 @@ public class Service {
     @Column(columnDefinition = "TEXT") // Better match for 'description TEXT' in SQL
     private String description;
 
-@Column(name = "booking_count")
-private int bookingCount;
+    @Column(name = "booking_count")
+    private Integer bookingCount;
 
-@Column(name = "is_available")
-private boolean isAvailable; 
+    @Column(name = "is_available")
+    private Boolean available; 
 
 // Add Getters and Setters (or use Lombok @Data)
 }
