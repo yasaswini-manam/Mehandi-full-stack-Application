@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")
                 .allowedOrigins(
                         "http://localhost:5173",          // Local React (development)
-                        "https://mehandi-full-stack-application.vercel.app/"     // Vercel frontend (production)
+                        "https://mehandi-full-stack-application.vercel.app"     // Vercel frontend (production)
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
